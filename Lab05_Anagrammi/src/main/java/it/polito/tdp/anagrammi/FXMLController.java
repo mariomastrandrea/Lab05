@@ -7,6 +7,7 @@ import it.polito.tdp.anagrammi.model.AnagrammiModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -33,6 +34,9 @@ public class FXMLController
 
     @FXML
     private Button resetButton;
+    
+    @FXML
+    private Label timeLabel;
 
 	private AnagrammiModel model;
 
@@ -47,14 +51,32 @@ public class FXMLController
     	if(this.inputTextField.getText().isBlank())
     		throw new RuntimeException("Error: input text cannot be blank");
     	
-    	String inputWord = this.inputTextField.getText();
+    	String inputWord = this.inputTextField.getText().trim();
     	
-    	this.model.computeAnagramsOf(inputWord);
-    	String meaningfulAnagramsList = this.model.printMeaningfulAnagramsOf(inputWord);
-    	String meaninglessAnagramsList = this.model.printMeaninglessAnagramsOf(inputWord);
+    	if(inputWord.length() > 9)
+    	{
+    		String message = "word too long! try a shorter word";
+    		this.anagrammiCorrettiTextArea.setText(message);
+        	this.anagrammiErratiTextArea.setText(message);
+        	return;
+    	}
     	
-    	this.anagrammiCorrettiTextArea.setText(meaningfulAnagramsList);
-    	this.anagrammiErratiTextArea.setText(meaninglessAnagramsList);
+    	double initialTime = (double)System.nanoTime();
+    	String meaningfulAnagrams = this.model.printMeaningfulAnagramsOf(inputWord);
+    	String meaninglessAnagrams = this.model.printMeaninglessAnagramsOf(inputWord);
+    	double finalTime = (double)System.nanoTime();
+    	
+    	this.anagrammiCorrettiTextArea.setText(meaningfulAnagrams);
+    	this.anagrammiErratiTextArea.setText(meaninglessAnagrams);
+    	
+    	double msDiff = (finalTime-initialTime)/1000000.0;
+    	String timeMessage;
+    	if(msDiff < 1000.0)
+    		timeMessage = String.format("Tempo impiegato: %.3f ms", msDiff);
+    	else
+    		timeMessage = String.format("Tempo impiegato: %.3f s", (msDiff/1000.0));
+    	
+    	this.timeLabel.setText(timeMessage);
     }
 
     @FXML
@@ -93,6 +115,7 @@ public class FXMLController
         assert calcolaAnagrammiButton != null : "fx:id=\"calcolaAnagrammiButton\" was not injected: check your FXML file 'Scene_lab05.fxml'.";
         assert anagrammiCorrettiTextArea != null : "fx:id=\"anagrammiCorrettiTextArea\" was not injected: check your FXML file 'Scene_lab05.fxml'.";
         assert anagrammiErratiTextArea != null : "fx:id=\"anagrammiErratiTextArea\" was not injected: check your FXML file 'Scene_lab05.fxml'.";
+        assert timeLabel != null : "fx:id=\"timeLabel\" was not injected: check your FXML file 'Scene_lab05.fxml'.";
         assert resetButton != null : "fx:id=\"resetButton\" was not injected: check your FXML file 'Scene_lab05.fxml'.";
     }
 }

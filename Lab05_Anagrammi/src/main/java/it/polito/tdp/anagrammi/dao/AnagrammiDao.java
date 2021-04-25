@@ -7,13 +7,13 @@ import java.sql.SQLException;
 
 public class AnagrammiDao
 {
-	private String sqlQuery = String.format("%s %s %s", 
-												"SELECT nome",
-												"FROM parola",
-												"WHERE nome = ?");
-	
 	public boolean isMeaningful(String word)
-	{		
+	{	
+		String sqlQuery = String.format("%s %s %s", 
+											"SELECT nome",
+											"FROM parola",
+											"WHERE nome = ?");
+		
 		try
 		{
 			Connection dbConnection = DBConnect.getDBConnection();
@@ -29,8 +29,32 @@ public class AnagrammiDao
 		}
 		catch(SQLException sqle)
 		{
-			sqle.printStackTrace();
-			throw new RuntimeException("Error: DAO problem", sqle);
+			throw new RuntimeException("Error: DAO proble in 'isMeaningful()'", sqle);
 		}
+	}
+	
+	public boolean existsPrefix(String prefix)
+	{
+		String sqlQuery = String.format("%s %s %s%s%s",
+											"SELECT nome",
+											"FROM parola",
+											"WHERE nome LIKE '",prefix,"%'");
+		try
+		{
+			Connection connection = DBConnect.getDBConnection();
+			PreparedStatement statement = connection.prepareStatement(sqlQuery);
+			ResultSet result = statement.executeQuery();
+			
+			boolean existsPrefix = result.next();
+			
+			DBConnect.closeResources(result, statement, connection);
+			
+			return existsPrefix;
+		}
+		catch(SQLException sqle)
+		{
+			throw new RuntimeException("Error: DAO proble in 'existsPrefix()'", sqle);
+		}
+		
 	}
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.anagrammi.FXMLController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.anagrammi.FXMLController">
    <top>
       <Label text="Lab5_Anagrammi" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -34,9 +34,17 @@
                   <Button fx:id="calcolaAnagrammiButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#handleCalcolaAnagrammi" text="Calcola Anagrammi" />
                </children>
                <VBox.margin>
-                  <Insets bottom="17.0" />
+                  <Insets bottom="13.0" />
                </VBox.margin>
             </HBox>
+            <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" text="tempo impiegato:       " textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets left="100.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
             <Label text="Anagrammi corretti">
                <font>
                   <Font size="14.0" />
